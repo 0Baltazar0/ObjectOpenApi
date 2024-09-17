@@ -1,0 +1,49 @@
+[build-system]
+requires = ["hatchling", "poetry-core>=1.0.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ObjectOpenApi"
+version = "0.0.1"
+authors = [
+  { name="Boldizsar Pal", email="palboldizsar@gmail.com" },
+]
+description = "Object oriented OpenApi wrapper"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/0Baltazar0/ChemSchema"
+Issues = "https://github.com/0Baltazar0/ChemSchema/issues"
+
+[tool.poetry]
+name = "ObjectOpenApi"
+version = "0.0.1"
+description = "Object oriented OpenApi wrapper"
+authors = ["Boldizsar Pal <palboldizsar@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = ">=3.10"
+# Add your dependencies here, for example:
+# requests = "^2.25.1"
+# numpy = "^1.20.0"
+sqlalchemy = "^2.0.30"
+pyyaml = "^6.0.1"
+types-pyyaml = "^6.0.12.20240311"
+
+[tool.poetry.dev-dependencies]
+# Add your development dependencies here, for example:
+# pytest = "^6.2.0"
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.10.0"
+pytest = "^8.2.2"
+
+
+[tool.mypy]
+files="./objectopenapi"

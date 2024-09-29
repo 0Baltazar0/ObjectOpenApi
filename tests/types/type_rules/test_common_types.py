@@ -7,9 +7,9 @@ from tests.types.smart_dataset_generator import (
 )
 
 
-from objectopenapi.parse_errors import SchemaMismatch
+from objectopenapi.utils.parse_errors import SchemaMismatch
 
-from objectopenapi.types import CommonKeys
+from objectopenapi.data_types.types import CommonKeys
 
 from yaml import dump
 
@@ -28,7 +28,7 @@ class TestCommonKeys(unittest.TestCase):
         obj.title = value
 
     @staticmethod
-    def _bad_parse(dataset: Any):
+    def _bad_parse(dataset: Any) -> None:
         TestCommonKeys.CC(**dataset)
         print(f"Must raise on dataset {dataset}")
 

@@ -6,9 +6,9 @@ from yaml import dump
 from tests.types.smart_dataset_generator import generate_object, generate_object_bad
 
 
-from objectopenapi.parse_errors import SchemaMismatch
+from objectopenapi.utils.parse_errors import SchemaMismatch
 
-from objectopenapi.types import ObjectType
+from objectopenapi.data_types.types import ObjectType
 
 
 class TestObjectTypes(unittest.TestCase):
@@ -37,7 +37,7 @@ class TestObjectTypes(unittest.TestCase):
         obj.required = value
 
     @staticmethod
-    def _bad_parse(dataset: Any):
+    def _bad_parse(dataset: Any) -> None:
         TestObjectTypes.CC(**dataset)
         print(f"Must raise on dataset {dataset}")
 

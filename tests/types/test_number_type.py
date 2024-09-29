@@ -6,9 +6,9 @@ from yaml import dump
 from tests.types.smart_dataset_generator import generate_number, generate_number_bad
 
 
-from objectopenapi.parse_errors import SchemaMismatch
+from objectopenapi.utils.parse_errors import SchemaMismatch
 
-from objectopenapi.types import NumberType
+from objectopenapi.data_types.types import NumberType
 
 
 class TestNumberType(unittest.TestCase):

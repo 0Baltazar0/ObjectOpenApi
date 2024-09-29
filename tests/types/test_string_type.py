@@ -6,9 +6,9 @@ from yaml import dump
 from tests.types.smart_dataset_generator import generate_string, generate_string_bad
 
 
-from objectopenapi.parse_errors import SchemaMismatch
+from objectopenapi.utils.parse_errors import SchemaMismatch
 
-from objectopenapi.types import StringType
+from objectopenapi.data_types.types import StringType
 
 
 class TestStringTypes(unittest.TestCase):
@@ -32,7 +32,7 @@ class TestStringTypes(unittest.TestCase):
         obj.default = value
 
     @staticmethod
-    def _bad_parse(dataset: Any):
+    def _bad_parse(dataset: Any) -> None:
         StringType(**dataset)
         print(f"Must raise on dataset {dataset}")
 

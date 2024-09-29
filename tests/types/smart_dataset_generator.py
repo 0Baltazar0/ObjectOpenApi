@@ -29,13 +29,13 @@ FLOAT_VARIANTS = [78.58, 29.16, 14.60, 92.74, 80.62, 2.78, 59.95, 62.49, 17.20, 
 BOOL_VARIANTS = [True, False]
 
 
-def all_but(except_var: Any):
-    ret = []
+def all_but(except_var: Any) -> list[Any]:
+    ret: Any = []
     for var in [STRING_VARIANTS, INT_VARIANTS, FLOAT_VARIANTS, BOOL_VARIANTS]:
         if var == except_var:
             continue
         ret += var
-    return ret[optimization_offset::optimization]
+    return ret[optimization_offset::optimization]  # type:ignore
 
 
 def simple_types_but(except_var: Any) -> list[dict[str, Any]]:
@@ -83,8 +83,8 @@ def combine_options(
 
 
 def generate_common_keys() -> list[dict[str, Any]]:
-    required_keys = [{}]
-    optional_keys = [
+    required_keys: list[dict[str, Any]] = [{}]
+    optional_keys: list[list[dict[str, Any]]] = [
         [{"nullable": x} for x in BOOL_VARIANTS],
         [{"title": x} for x in STRING_VARIANTS],
     ]
@@ -92,8 +92,8 @@ def generate_common_keys() -> list[dict[str, Any]]:
 
 
 def generate_bad_common_keys() -> list[dict[str, Any]]:
-    required_keys = [{}]
-    optional_keys = [
+    required_keys: list[dict[str, Any]] = [{}]
+    optional_keys: list[list[dict[str, Any]]] = [
         [{"nullable": x} for x in all_but(BOOL_VARIANTS)],
         [{"title": x} for x in all_but(STRING_VARIANTS)],
     ]
@@ -101,8 +101,8 @@ def generate_bad_common_keys() -> list[dict[str, Any]]:
 
 
 def generate_good_min_max() -> list[dict[str, Any]]:
-    required_keys = [{}]
-    optional_keys = [
+    required_keys: list[dict[str, Any]] = [{}]
+    optional_keys: list[list[dict[str, Any]]] = [
         [{"maxLength": x} for x in INT_VARIANTS],
         [{"minLength": x} for x in INT_VARIANTS],
     ]
@@ -110,8 +110,8 @@ def generate_good_min_max() -> list[dict[str, Any]]:
 
 
 def generate_bad_min_max() -> list[dict[str, Any]]:
-    required_keys = [{}]
-    optional_keys = [
+    required_keys: list[dict[str, Any]] = [{}]
+    optional_keys: list[list[dict[str, Any]]] = [
         [{"maxLength": x} for x in all_but(INT_VARIANTS)],
         [{"minLength": x} for x in all_but(INT_VARIANTS)],
     ]
@@ -119,8 +119,8 @@ def generate_bad_min_max() -> list[dict[str, Any]]:
 
 
 def generate_good_number_rules_int() -> list[dict[str, Any]]:
-    required_keys = [{}]
-    optional_keys = [
+    required_keys: list[dict[str, Any]] = [{}]
+    optional_keys: list[list[dict[str, Any]]] = [
         [{"exclusiveMinimum": x} for x in BOOL_VARIANTS],
         [{"exclusiveMaximum": x} for x in BOOL_VARIANTS],
         [{"maximum": x} for x in INT_VARIANTS],
@@ -131,8 +131,8 @@ def generate_good_number_rules_int() -> list[dict[str, Any]]:
 
 
 def generate_bad_number_rules_int() -> list[dict[str, Any]]:
-    required_keys = [{}]
-    optional_keys = [
+    required_keys: list[dict[str, Any]] = [{}]
+    optional_keys: list[list[dict[str, Any]]] = [
         [{"exclusiveMinimum": x} for x in all_but(BOOL_VARIANTS)],
         [{"exclusiveMaximum": x} for x in all_but(BOOL_VARIANTS)],
         [{"maximum": x} for x in all_but(INT_VARIANTS)],
@@ -143,8 +143,8 @@ def generate_bad_number_rules_int() -> list[dict[str, Any]]:
 
 
 def generate_good_number_rules_float() -> list[dict[str, Any]]:
-    required_keys = [{}]
-    optional_keys = [
+    required_keys: list[dict[str, Any]] = [{}]
+    optional_keys: list[list[dict[str, Any]]] = [
         [{"exclusiveMinimum": x} for x in BOOL_VARIANTS],
         [{"exclusiveMaximum": x} for x in BOOL_VARIANTS],
         [{"maximum": x} for x in FLOAT_VARIANTS],
@@ -155,8 +155,8 @@ def generate_good_number_rules_float() -> list[dict[str, Any]]:
 
 
 def generate_bad_number_rules_float() -> list[dict[str, Any]]:
-    required_keys = [{}]
-    optional_keys = [
+    required_keys: list[dict[str, Any]] = [{}]
+    optional_keys: list[list[dict[str, Any]]] = [
         [{"exclusiveMinimum": x} for x in all_but(BOOL_VARIANTS)],
         [{"exclusiveMaximum": x} for x in all_but(BOOL_VARIANTS)],
         [{"maximum": x} for x in all_but(FLOAT_VARIANTS)],
@@ -271,8 +271,10 @@ def generate_file_bad() -> list[dict[str, Any]]:
 
 def generate_array() -> list[dict[str, Any]]:
     simple_types = simple_types_but(None)
-    required_keys = [{"type": "array", "items": x} for x in simple_types]
-    optional_keys = [
+    required_keys: list[dict[str, Any]] = [
+        {"type": "array", "items": x} for x in simple_types
+    ]
+    optional_keys: list[list[dict[str, Any]]] = [
         [{"uniqueItems": x} for x in BOOL_VARIANTS],
         [{"minItems": x} for x in INT_VARIANTS],
         [{"maxItems": x} for x in INT_VARIANTS],
@@ -297,8 +299,8 @@ def generate_object() -> list[dict[str, Any]]:
     kvs = {}
     for kv in key_values:
         kvs[kv[0]] = kv[1]
-    required_keys = [{"type": "object", "properties": kvs}]
-    optional_keys = [
+    required_keys: list[dict[str, Any]] = [{"type": "object", "properties": kvs}]
+    optional_keys: list[list[dict[str, Any]]] = [
         [{"additionalProperties": x} for x in BOOL_VARIANTS],
         [{"minProperties": x} for x in INT_VARIANTS],
         [{"maxProperties": x} for x in INT_VARIANTS],

@@ -46,4 +46,4 @@ pytest = "^8.2.2"
 
 
 [tool.mypy]
-files="./objectopenapi"
+files="./objectopenapi,./tests"

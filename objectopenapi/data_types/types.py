@@ -1,10 +1,10 @@
 from typing import Any, Generic, Literal, Optional, TypeVar, TypeAlias
 
-from .parse_errors import SchemaMismatch
+from ..utils.parse_errors import SchemaMismatch
 
-from .common_types import JSON_DICT
+from ..utils.common_types import JSON_DICT
 
-from .validator import (
+from ..utils.validator import (
     is_value_type,
     validate_key_exact,
     validate_key_type,

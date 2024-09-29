@@ -3,9 +3,9 @@ import unittest
 
 from yaml import dump
 
-from objectopenapi.parse_errors import SchemaMismatch
+from objectopenapi.utils.parse_errors import SchemaMismatch
 
-from objectopenapi.types import FileType
+from objectopenapi.data_types.types import FileType
 from tests.types.smart_dataset_generator import generate_file, generate_file_bad
 
 
@@ -15,7 +15,7 @@ class TestFileType(unittest.TestCase):
     CC = FileType
 
     @staticmethod
-    def _bad_parse(dataset: Any):
+    def _bad_parse(dataset: Any) -> None:
         TestFileType.CC(**dataset)
         print(f"Must raise on dataset {dataset}")
 

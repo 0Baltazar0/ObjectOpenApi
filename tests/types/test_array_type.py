@@ -6,9 +6,9 @@ from yaml import dump
 from tests.types.smart_dataset_generator import generate_array, generate_array_bad
 
 
-from objectopenapi.parse_errors import SchemaMismatch
+from objectopenapi.utils.parse_errors import SchemaMismatch
 
-from objectopenapi.types import ArrayType
+from objectopenapi.data_types.types import ArrayType
 
 
 class TestArrayTypes(unittest.TestCase):
@@ -33,7 +33,7 @@ class TestArrayTypes(unittest.TestCase):
         obj.maxItems = value
 
     @staticmethod
-    def _bad_parse(dataset: Any):
+    def _bad_parse(dataset: Any) -> None:
         TestArrayTypes.CC(**dataset)
         print(f"Must raise on dataset {dataset}")
 

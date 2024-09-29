@@ -10,9 +10,9 @@ from tests.types.smart_dataset_generator import (
 )
 
 
-from objectopenapi.parse_errors import SchemaMismatch
+from objectopenapi.utils.parse_errors import SchemaMismatch
 
-from objectopenapi.types import OneOfType, StringType
+from objectopenapi.data_types.types import OneOfType, StringType
 
 
 class TestOneOfTypes(unittest.TestCase):
@@ -23,12 +23,12 @@ class TestOneOfTypes(unittest.TestCase):
     CC = OneOfType
 
     @staticmethod
-    def _bad_parse(dataset: Any):
+    def _bad_parse(dataset: Any) -> None:
         TestOneOfTypes.CC(**dataset)
         print(f"Must raise on dataset {dataset}")
 
     @staticmethod
-    def _oneOf(obj: OneOfType, value: Any):
+    def _oneOf(obj: OneOfType, value: Any) -> None:
         obj.oneOf = value
 
     def test_good_parse(self) -> None:

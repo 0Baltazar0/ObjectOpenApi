@@ -10,16 +10,16 @@ from tests.types.smart_dataset_generator import (
     generate_good_number_rules_int,
 )
 
-from objectopenapi.parse_errors import SchemaMismatch
+from objectopenapi.utils.parse_errors import SchemaMismatch
 
-from objectopenapi.types import NumberRules
+from objectopenapi.data_types.types import NumberRules
 
 
-def floatify(**kwargs) -> NumberRules:
+def floatify(**kwargs) -> NumberRules[float]:  # type:ignore
     return NumberRules(number_type=float, **kwargs)
 
 
-def intify(**kwargs) -> NumberRules:
+def intify(**kwargs) -> NumberRules[int]:  # type:ignore
     return NumberRules(number_type=int, **kwargs)
 
 

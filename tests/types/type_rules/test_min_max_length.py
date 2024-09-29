@@ -9,8 +9,8 @@ from tests.types.smart_dataset_generator import (
 )
 
 
-from objectopenapi.parse_errors import SchemaMismatch
-from objectopenapi.types import MinMaxLength
+from objectopenapi.utils.parse_errors import SchemaMismatch
+from objectopenapi.data_types.types import MinMaxLength
 
 
 class TestMinMaxLength(unittest.TestCase):
@@ -27,7 +27,7 @@ class TestMinMaxLength(unittest.TestCase):
         obj.minLength = value
 
     @staticmethod
-    def _bad_parse(dataset: Any):
+    def _bad_parse(dataset: Any) -> None:
         TestMinMaxLength.CC(**dataset)
         print(f"Must raise on dataset {dataset}")
 

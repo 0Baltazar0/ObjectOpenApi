@@ -6,10 +6,10 @@ from yaml import dump
 from tests.types.smart_dataset_generator import generate_int, generate_int_bad
 
 
-from objectopenapi.parse_errors import SchemaMismatch
+from objectopenapi.utils.parse_errors import SchemaMismatch
 
 
-from objectopenapi.types import IntegerType
+from objectopenapi.data_types.types import IntegerType
 
 
 class TestIntegerType(unittest.TestCase):
@@ -25,7 +25,7 @@ class TestIntegerType(unittest.TestCase):
             )
 
     @staticmethod
-    def _bad_parse(dataset: Any):
+    def _bad_parse(dataset: Any) -> None:
         IntegerType(**dataset)
         print(f"Must raise on dataset {dataset}")
 

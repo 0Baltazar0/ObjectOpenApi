@@ -10,9 +10,9 @@ from tests.types.smart_dataset_generator import (
 )
 
 
-from objectopenapi.parse_errors import SchemaMismatch
+from objectopenapi.utils.parse_errors import SchemaMismatch
 
-from objectopenapi.types import AnyOfType, StringType
+from objectopenapi.data_types.types import AnyOfType, StringType
 
 
 class TestAnyOfTypes(unittest.TestCase):
@@ -23,12 +23,12 @@ class TestAnyOfTypes(unittest.TestCase):
     CC = AnyOfType
 
     @staticmethod
-    def _bad_parse(dataset: Any):
+    def _bad_parse(dataset: Any) -> None:
         TestAnyOfTypes.CC(**dataset)
         print(f"Must raise on dataset {dataset}")
 
     @staticmethod
-    def _anyOf(obj: AnyOfType, value: Any):
+    def _anyOf(obj: AnyOfType, value: Any) -> None:
         obj.anyOf = value
 
     def test_good_parse(self) -> None:

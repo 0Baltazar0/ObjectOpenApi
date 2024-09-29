@@ -4,9 +4,9 @@ import unittest
 from yaml import dump
 
 
-from objectopenapi.parse_errors import SchemaMismatch
+from objectopenapi.utils.parse_errors import SchemaMismatch
 
-from objectopenapi.types import BooleanType
+from objectopenapi.data_types.types import BooleanType
 from .smart_dataset_generator import generate_boolean, generate_boolean_bad
 
 

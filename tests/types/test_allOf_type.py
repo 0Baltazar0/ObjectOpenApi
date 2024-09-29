@@ -12,7 +12,7 @@ from tests.types.smart_dataset_generator import (
 
 from objectopenapi.parse_errors import SchemaMismatch
 
-from objectopenapi.types import AllOfType, OneOfType, StringType
+from objectopenapi.types import AllOfType, StringType
 
 
 class TestAllOfTypes(unittest.TestCase):

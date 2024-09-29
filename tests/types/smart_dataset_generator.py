@@ -3,8 +3,8 @@ from typing import Any
 import os
 from tests.tools import merge_dict
 
-optimisation = int(os.environ.get("LONG_DATASET_SKIP", 2))
-optimisation_offset = int(os.environ.get("OFFSET_DATASET", 0))
+optimization = int(os.environ.get("LONG_DATASET_SKIP", 2))
+optimization_offset = int(os.environ.get("OFFSET_DATASET", 0))
 variety = min(int(os.environ.get("MAX_VARIETY", 3)), 10)
 variety_offset = min(int(os.environ.get("OFFSET_VARIETY", 0)), 9)
 
@@ -35,7 +35,7 @@ def all_but(except_var: Any):
         if var == except_var:
             continue
         ret += var
-    return ret[optimisation_offset::optimisation]
+    return ret[optimization_offset::optimization]
 
 
 def simple_types_but(except_var: Any) -> list[dict[str, Any]]:
@@ -61,10 +61,10 @@ def recursive_combinations(options: list[list[dict[str, Any]]]) -> list[dict[str
         return deepcopy(options[0])
     rest = deepcopy(options)
     selected = rest.pop(0)
-    propogate = recursive_combinations(rest)
+    propagate = recursive_combinations(rest)
     result: list[dict[str, Any]] = [{}]
     for item in selected:
-        for ret in propogate:
+        for ret in propagate:
             result.append(merge_dict(deepcopy(ret), deepcopy(item)))
     return result
 
@@ -206,8 +206,8 @@ def generate_string_bad() -> list[dict[str, Any]]:
         [{"enum": x for x in all_but(STRING_VARIANTS)}],
         [{"format": "email"}],
         [{"pattern": f"/{x}/" for x in all_but(STRING_VARIANTS)}],
-        generate_bad_common_keys()[optimisation_offset::optimisation],
-        generate_bad_min_max()[optimisation_offset::optimisation],
+        generate_bad_common_keys()[optimization_offset::optimization],
+        generate_bad_min_max()[optimization_offset::optimization],
     ]
     return combine_options(required_keys, optional_keys)[1:]
 
@@ -365,7 +365,7 @@ if __name__ == "__main__":
     collection_health = []
     for key in keys:
         count = all_simple_types.count(key)
-        collection_health.append({"key": key, "occurence": count})
+        collection_health.append({"key": key, "occurrence": count})
     with open("generated_data_health.json", "w") as out:
         import json
 

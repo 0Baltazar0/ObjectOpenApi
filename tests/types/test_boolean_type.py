@@ -19,12 +19,11 @@ class TestBooleanType(unittest.TestCase):
             self.assertIsInstance(
                 BooleanType(**dataset),
                 BooleanType,
-                "Booleantype could not be initiated",
+                "Boolean type could not be initiated",
             )
 
     def test_bad_parse(self) -> None:
         for bd in self.bad_datasets:
-            print(bd)
             self.assertRaises(
                 SchemaMismatch,
                 lambda: BooleanType(**bd),

@@ -732,10 +732,12 @@ ExplicitTypeDeclaration: TypeAlias = (
 
 class OneOfType:
     _oneOf: list["TypeDeclaration"]
+    source: JSON_DICT = {}
 
     def __init__(self, **kwargs: Any) -> None:
         if "oneOf" in kwargs:
             self.oneOf = kwargs["oneOf"]
+        self.source = kwargs
 
     @property
     def oneOf(self) -> list["TypeDeclaration"]:
@@ -755,6 +757,19 @@ class OneOfType:
     def append(self, component: "TypeDeclaration") -> None:
         self._oneOf = (self._oneOf or []) + [component]
 
+    def __eq__(self, value: object) -> bool:
+        if not isinstance(value, OneOfType):
+            return False
+
+        if len(value.oneOf) != len(self.oneOf):
+            return False
+
+        for s, v in zip(self.oneOf, value.oneOf):
+            if not s == v:
+                return False
+        else:
+            return True
+
 
 class AnyOfType:
     _anyOf: list["TypeDeclaration"]
@@ -762,6 +777,8 @@ class AnyOfType:
     def __init__(self, **kwargs: Any) -> None:
         if "anyOf" in kwargs:
             self.anyOf = kwargs["anyOf"]
+        else:
+            raise SchemaMismatch("anyOf must be present in an anyOf structure")
 
     def dump(self, dest: JSON_DICT) -> JSON_DICT:
         dest["anyOf"] = [item.dump({}) for item in self.anyOf]
@@ -780,6 +797,19 @@ class AnyOfType:
 
     def append(self, component: "TypeDeclaration") -> None:
         self._anyOf = (self._anyOf or []) + [component]
+
+    def __eq__(self, value: object) -> bool:
+        if not isinstance(value, AnyOfType):
+            return False
+
+        if len(value.anyOf) != len(self.anyOf):
+            return False
+
+        for s, v in zip(self.anyOf, value.anyOf):
+            if not s == v:
+                return False
+        else:
+            return True
 
 
 class AllOfType:
@@ -806,6 +836,19 @@ class AllOfType:
 
     def append(self, component: "TypeDeclaration") -> None:
         self._allOf = (self._allOf or []) + [component]
+
+    def __eq__(self, value: object) -> bool:
+        if not isinstance(value, AllOfType):
+            return False
+
+        if len(value.allOf) != len(self.allOf):
+            return False
+
+        for s, v in zip(self.allOf, value.allOf):
+            if not s == v:
+                return False
+        else:
+            return True
 
 
 class RefType:

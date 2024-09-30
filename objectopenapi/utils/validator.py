@@ -9,7 +9,6 @@ def is_value_type(value: Any, types: Any | list[Any]) -> Any:
             raise SchemaMismatch(f"Expecting one of {types}, getting {type(value)}!")
     elif not isinstance(value, types):
         raise SchemaMismatch(f"Expecting {types}, getting {type(value)}!")
-    print([isinstance(value, kt) for kt in types], types, value)
     return value
 
 

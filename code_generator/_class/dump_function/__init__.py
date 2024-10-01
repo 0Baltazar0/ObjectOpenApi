@@ -15,17 +15,17 @@ def resolve_dump(ass: ast.AnnAssign, target_id: str, body: list[ast.stmt]) -> No
                     if isinstance(line, ast.If) and is_target_if(line, target_id):
                         break
                 else:
-                    dec.body.insert(len(dec.body), make_if_statement(target_id))
+                    dec.body.insert(len(dec.body) - 1, make_if_statement(target_id))
             else:
                 for line in dec.body:
                     if isinstance(line, ast.Assign) and is_target_ann(line, target_id):
                         break
                 else:
-                    dec.body.insert(len(dec.body), make_target_ann(target_id))
+                    dec.body.insert(len(dec.body) - 1, make_target_ann(target_id))
             return
     else:
         fun: ast.FunctionDef = ast.parse(
             "def dump(self,source:JSON_DICT)->JSON_DICT:\n\tif not source:\n\t\tsource=self.source\n\treturn source"
         ).body[0]  # type: ignore
-        fun.body.insert(len(fun.body), make_target_ann(target_id))
+        fun.body.insert(len(fun.body) - 1, make_target_ann(target_id))
         body.append(fun)

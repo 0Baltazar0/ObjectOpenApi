@@ -95,5 +95,5 @@ def is_target_if(fi: ast.If, target_id: str) -> bool:
 
 def make_if_statement(target_id: str) -> ast.stmt:
     return ast.parse(
-        f"if self.{target_id} is not None:\n\tsource['{target_id}'] = self.{target_id}\nelif remove_unset:\n\tsource.pop({target_id},None)"
+        f"if self.{target_id} is not None:\n\tsource['{target_id}'] = self.{target_id}\nelif remove_unset:\n\tsource.pop('{target_id}',None)"
     ).body[0]

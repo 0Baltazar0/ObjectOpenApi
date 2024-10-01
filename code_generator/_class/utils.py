@@ -18,5 +18,5 @@ def optional_detector(ass: ast.AnnAssign) -> bool:
 
 def type_extractor(ass: ast.AnnAssign) -> str:
     if isinstance(ass.annotation, ast.Subscript):
-        return ast.unparse(ass.annotation.slice)
-    return ast.unparse(ass.annotation)
+        return ast.unparse(ass.annotation.slice).replace("'", '"')
+    return ast.unparse(ass.annotation).replace("'", '"')

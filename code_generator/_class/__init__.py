@@ -32,4 +32,4 @@ if __name__ == "__main__":
         os.path.join(os.path.abspath(os.getcwd()) + "\\objectopenapi\\") + "**/*.py",
         recursive=True,
     ):
-        print(filename)
+        parse_file(filename)

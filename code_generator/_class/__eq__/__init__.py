@@ -11,12 +11,12 @@ def resolve__eq__(target_id: str, body: list[ast.stmt]) -> None:
                     if is_if_target(line, target_id):
                         return
             else:
-                dec.body.insert(len(dec.body), make_test_if(target_id))
+                dec.body.insert(len(dec.body) - 1, make_test_if(target_id))
             return
     else:
         fun: ast.FunctionDef = ast.parse(
             "def __eq__(self,value:Any)->bool:\n\tif not isinstance(value,type(self)):\n\t\treturn False\n\treturn True"
         ).body[0]  # type: ignore
-        fun.body.insert(len(fun.body), make_test_if(target_id))
+        fun.body.insert(len(fun.body) - 1, make_test_if(target_id))
         body.append(fun)
         return

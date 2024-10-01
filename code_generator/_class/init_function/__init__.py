@@ -24,7 +24,7 @@ def add_to__init__(
         ):
             if not is_optional and len(line.orelse) == 0:
                 fi = ast.parse(
-                    f"if '{target_id}' in kwargs:\n\tself._{target_id} = validate_key_type('{target_id}', {typeof}, {'{'}'{target_id}': kwargs['{target_id}']{'}'})\nelse:\n\traise SchemaMismatch('Object must contain \"{target_id}\" value ({typeof})')"
+                    f"if '{target_id}' in kwargs:\n\tself._{target_id} = validate_key_type('{target_id}', {typeof}, {'{'}'{target_id}': kwargs['{target_id}']{'}'})\nelse:\n\traise SchemaMismatch('Object must contain \"{target_id}\" value ({typeof.replace()})')"
                 ).body[0]
                 line.orelse = fi.orelse
 

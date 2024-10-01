@@ -1,3 +1,56 @@
+"""
+"title" in kwargs
+<ast.If object at 0x0000026B97161BA0>
+body
+item:0
+        <ast.Return object at 0x0000026B97162B00>
+        value:<ast.Constant object at 0x0000026B96FA3010>
+                <ast.Constant object at 0x0000026B96FA3010>
+                kind:None
+                        None
+                n:False
+                        False
+                        denominator:1
+                        imag:0
+                        numerator:0
+                        real:0
+                s:False
+                        False
+                        denominator:1
+                        imag:0
+                        numerator:0
+                        real:0
+                value:False
+                        False
+                        denominator:1
+                        imag:0
+                        numerator:0
+                        real:0
+orelse
+test:<ast.Compare object at 0x0000026B97160F40>
+        <ast.Compare object at 0x0000026B97160F40>
+        comparators
+        item:0
+                <ast.Name object at 0x0000026B97162920>
+                ctx:<ast.Load object at 0x0000026B92EB9360>
+                        <ast.Load object at 0x0000026B92EB9360>
+                id:kwargs
+                        kwargs
+        left:<ast.Constant object at 0x0000026B97162230>
+                <ast.Constant object at 0x0000026B97162230>
+                kind:None
+                        None
+                n:title
+                        title
+                s:title
+                        title
+                value:title
+                        title
+        ops
+        item:0
+                <ast.In object at 0x0000026B92EBBEB0>
+"""
+
 import ast
 
 from code_generator._class.utils import optional_detector, type_extractor
@@ -17,16 +70,12 @@ def add_to__init__(
     fun: ast.FunctionDef, target_id: str, is_optional: bool, typeof: str
 ) -> None:
     for line in fun.body:
-        if (
-            is_optional
-            and isinstance(line, ast.If)
-            and is_if_a_value_in_kwargs(line, target_id)
-        ):
+        if isinstance(line, ast.If) and is_if_a_value_in_kwargs(line, target_id):
             if not is_optional and len(line.orelse) == 0:
                 fi = ast.parse(
-                    f"if '{target_id}' in kwargs:\n\tself._{target_id} = validate_key_type('{target_id}', {typeof}, {'{'}'{target_id}': kwargs['{target_id}']{'}'})\nelse:\n\traise SchemaMismatch('Object must contain \"{target_id}\" value ({typeof.replace()})')"
+                    f"if '{target_id}' in kwargs:\n\tself._{target_id} = validate_key_type('{target_id}', {typeof}, {'{'}'{target_id}': kwargs['{target_id}']{'}'})\nelse:\n\traise SchemaMismatch('Object must contain \"{target_id}\" value ({typeof})')"
                 ).body[0]
-                line.orelse = fi.orelse
+                line.orelse = fi.orelse  # type: ignore
 
             return
     else:

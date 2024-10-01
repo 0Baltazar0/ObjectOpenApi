@@ -1,5 +1,6 @@
 import ast
 import os
+import sys
 import ast_comments
 
 from code_generator._class.__eq__ import resolve__eq__
@@ -27,9 +28,14 @@ def parse_file(dir: str) -> None:
 if __name__ == "__main__":
     import glob
 
+    if len(sys.argv) > 0:
+        for filename in sys.argv[1:]:
+            parse_file(filename)
     # root_dir needs a trailing slash (i.e. /root/dir/)
-    for filename in glob.iglob(
-        os.path.join(os.path.abspath(os.getcwd()) + "\\objectopenapi\\") + "**/*.py",
-        recursive=True,
-    ):
-        parse_file(filename)
+    else:
+        for filename in glob.iglob(
+            os.path.join(os.path.abspath(os.getcwd()) + "\\objectopenapi\\")
+            + "**/*.py",
+            recursive=True,
+        ):
+            parse_file(filename)

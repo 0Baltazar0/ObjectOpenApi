@@ -6,6 +6,7 @@ import ast_comments
 from code_generator._class.__eq__ import resolve__eq__
 from code_generator._class.dump_function import resolve_dump
 from code_generator._class.init_function import resolve__init__
+from code_generator._class.prop_setter import resolve_property_set_get
 
 
 def parse_file(dir: str) -> None:
@@ -21,6 +22,7 @@ def parse_file(dir: str) -> None:
                         resolve__init__(line, line.target.id[1:], entry.body)
                         resolve_dump(line, line.target.id[1:], entry.body)
                         resolve__eq__(line.target.id[1:], entry.body)
+                        resolve_property_set_get(line, line.target.id[1:], entry.body)
     with open(dir, "w") as outfile:
         outfile.write(ast_comments.unparse(doc))
 

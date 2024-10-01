@@ -7,41 +7,6 @@ from objectopenapi.utils.parse_errors import SchemaMismatch
 class PathItem:
     _ref: Optional[str]
 
-    @property
-    def ref(self) -> Optional[str]:
-        return self._ref
-
-    @ref.setter
-    def ref(self, value: Optional[str]) -> None:
-        self._ref = value
-
-    def __init__(self, **kwargs: Any) -> None:
-        self.source = kwargs
-        if "ref" in kwargs:
-            self._ref = kwargs["ref"]
-
-    def dump(self, source: JSON_DICT) -> JSON_DICT:
-        if not source:
-            source = self.source
-
-        remove_unset = (
-            os.environ.get("REMOVE_UNSET_PROPERTIES", "true").lower() == "true"
-        )
-        if self._ref:
-            source["ref"] = self._ref
-        elif remove_unset:
-            source.pop("ref", None)
-        return source
-
-    def __eq__(self, value: object) -> bool:
-        if not isinstance(value, PathItem):
-            return False
-
-        if value.ref != self.ref:
-            return False
-
-        return True
-
 
 class Paths:
     _paths: dict[str, PathItem]

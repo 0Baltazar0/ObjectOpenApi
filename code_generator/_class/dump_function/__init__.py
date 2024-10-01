@@ -25,7 +25,7 @@ def resolve_dump(ass: ast.AnnAssign, target_id: str, body: list[ast.stmt]) -> No
             return
     else:
         fun: ast.FunctionDef = ast.parse(
-            "def dump(self,source:JSON_DICT)->JSON_DICT:\n\tif not source:\n\t\tsource=self.source\n\treturn source"
+            "def dump(self,source:JSON_DICT)->JSON_DICT:\n\tif not source:\n\t\tsource=deepcopy(self.source)\n\treturn source"
         ).body[0]  # type: ignore
         fun.body.insert(len(fun.body) - 1, make_target_ann(target_id))
         body.append(fun)

@@ -82,6 +82,9 @@ test:<ast.Compare object at 0x0000026B96FA1840>
 
 import ast
 
+from code_generator._class.dump_function.utils import make_dict_dump
+from code_generator._class.utils import multi_dict_detector, simple_dict_detector
+
 
 def is_target_if(fi: ast.If, target_id: str) -> bool:
     if isinstance(fi.test, ast.Compare):
@@ -93,7 +96,10 @@ def is_target_if(fi: ast.If, target_id: str) -> bool:
     return False
 
 
-def make_if_statement(target_id: str) -> ast.stmt:
-    return ast.parse(
+def make_if_statement(ass: ast.AnnAssign, target_id: str) -> ast.stmt:
+    fi: ast.If = ast.parse(
         f"if self.{target_id} is not None:\n\tsource['{target_id}'] = self.{target_id}\nelif remove_unset:\n\tsource.pop('{target_id}',None)"
-    ).body[0]
+    ).body[0]  # type:ignore
+    if simple_dict_detector(ass) or multi_dict_detector(ass):
+        fi.body = [make_dict_dump(target_id)]
+    return fi

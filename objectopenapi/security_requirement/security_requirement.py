@@ -1,7 +1,7 @@
 from objectopenapi.utils.common_types import JSON_DICT
 
 
-class Security:
+class SecurityRequirement:
     def __init__(self) -> None:
         pass
 

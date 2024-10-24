@@ -8,12 +8,14 @@ from code_generator._class.dump_function import resolve_dump
 from code_generator._class.init_function import resolve__init__
 from code_generator._class.prop_setter import resolve_property_set_get
 
+SKIP_CLASS = ["Paths"]
+
 
 def parse_file(dir: str) -> None:
     with open(dir) as infile:
         doc: ast.Module = ast_comments.parse(infile.read())  # type: ignore
     for entry in doc.body:
-        if isinstance(entry, ast.ClassDef):
+        if isinstance(entry, ast.ClassDef) and entry.name not in SKIP_CLASS:
             for line in entry.body:
                 if isinstance(line, ast.AnnAssign) and isinstance(
                     line.target, ast.Name
@@ -21,7 +23,7 @@ def parse_file(dir: str) -> None:
                     if line.target.id.startswith("_"):
                         resolve__init__(line, line.target.id[1:], entry.body)
                         resolve_dump(line, line.target.id[1:], entry.body)
-                        resolve__eq__(line.target.id[1:], entry.body)
+                        resolve__eq__(line, line.target.id[1:], entry.body)
                         resolve_property_set_get(line, line.target.id[1:], entry.body)
     with open(dir, "w") as outfile:
         outfile.write(ast_comments.unparse(doc))

@@ -5,7 +5,7 @@ from objectopenapi.components.components import Components
 from objectopenapi.external_doc.external_doc import ExternalDocs
 from objectopenapi.info.info import Info
 from objectopenapi.paths.paths import Paths
-from objectopenapi.security.security import Security
+from objectopenapi.security_requirement.security_requirement import SecurityRequirement
 from objectopenapi.server.server import Server
 from objectopenapi.tag.tag import Tag
 from objectopenapi.utils.common_types import JSON_DICT
@@ -77,14 +77,14 @@ class OpenApi:
     def components(self, value: Components) -> None:
         self._components = value
 
-    _security: Optional[list[Security]]
+    _security: Optional[list[SecurityRequirement]]
 
     @property
-    def security(self) -> Optional[list[Security]]:
+    def security(self) -> Optional[list[SecurityRequirement]]:
         return self._security
 
     @security.setter
-    def security(self, value: Optional[list[Security]]) -> None:
+    def security(self, value: Optional[list[SecurityRequirement]]) -> None:
         self._security = value
 
     _tags: Optional[list[Tag]]
@@ -161,7 +161,7 @@ class OpenApi:
                     "Openapi document 'security' must be of value ([Security Object])"
                 )
             self._security = [
-                Security(**s)
+                SecurityRequirement(**s)
                 for s in kwargs["security"]
                 if is_value_type(s, dict)
                 and isinstance(

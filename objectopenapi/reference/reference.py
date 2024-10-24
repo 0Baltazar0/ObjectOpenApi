@@ -1,24 +1,34 @@
 from copy import deepcopy
 import os
 from typing import Any, Optional
-from objectopenapi.external_doc.external_doc import ExternalDocs
+
 from objectopenapi.utils.common_types import JSON_DICT
 from objectopenapi.utils.parse_errors import SchemaMismatch
 from objectopenapi.utils.validator import validate_key_type
 
 
-class Tag:
-    _name: str
+class Reference:
+    _ref: str
 
     @property
-    def name(self) -> str:
-        return self._name
+    def ref(self) -> str:
+        return self._ref
 
-    @name.setter
-    def name(self, value: str) -> None:
-        self._name = value
+    @ref.setter
+    def ref(self, value: str) -> None:
+        self._ref = value
 
-    _description: Optional[str]
+    _summary: Optional[str] = None
+
+    @property
+    def summary(self) -> Optional[str]:
+        return self._summary
+
+    @summary.setter
+    def summary(self, value: Optional[str]) -> None:
+        self._summary = value
+
+    _description: Optional[str] = None
 
     @property
     def description(self) -> Optional[str]:
@@ -28,28 +38,20 @@ class Tag:
     def description(self, value: Optional[str]) -> None:
         self._description = value
 
-    _externalDocs: Optional[ExternalDocs]
-
-    @property
-    def externalDocs(self) -> Optional[ExternalDocs]:
-        return self._externalDocs
-
-    @externalDocs.setter
-    def externalDocs(self, value: Optional[ExternalDocs]) -> None:
-        self._externalDocs = value
-
     def __init__(self, **kwargs: Any) -> None:
         self.source = kwargs
-        if "name" in kwargs:
-            self._name = validate_key_type("name", str, {"name": kwargs["name"]})
+        if "$ref" in kwargs:
+            self._ref = validate_key_type("ref", str, {"ref": kwargs["$ref"]})
         else:
-            raise SchemaMismatch('Object must contain "name" value (str)')
+            raise SchemaMismatch('Object must contain "$ref" value (str)')
+        if "summary" in kwargs:
+            self._summary = validate_key_type(
+                "summary", str, {"summary": kwargs["summary"]}
+            )
         if "description" in kwargs:
             self._description = validate_key_type(
                 "description", str, {"description": kwargs["description"]}
             )
-        if "externalDocs" in kwargs:
-            self._externalDocs = ExternalDocs(**kwargs["externalDocs"])
 
     def dump(self, source: JSON_DICT) -> JSON_DICT:
         if not source:
@@ -57,24 +59,24 @@ class Tag:
         remove_unset = (
             os.environ.get("REMOVE_UNSET_PROPERTIES", "true").lower() == "true"
         )
-        source["name"] = self.name
+        source["$ref"] = self.ref
+        if self.summary is not None:
+            source["summary"] = self.summary
+        elif remove_unset:
+            source.pop("summary", None)
         if self.description is not None:
             source["description"] = self.description
         elif remove_unset:
             source.pop("description", None)
-        if self.externalDocs is not None:
-            source["externalDocs"] = self.externalDocs.dump({})
-        elif remove_unset:
-            source.pop("externalDocs", None)
         return source
 
     def __eq__(self, value: Any) -> bool:
         if not isinstance(value, type(self)):
             return False
-        if self.name != value.name:
+        if self.ref != value.ref:
+            return False
+        if self.summary != value.summary:
             return False
         if self.description != value.description:
-            return False
-        if self.externalDocs != value.externalDocs:
             return False
         return True

@@ -15,13 +15,15 @@ def resolve_dump(ass: ast.AnnAssign, target_id: str, body: list[ast.stmt]) -> No
                     if isinstance(line, ast.If) and is_target_if(line, target_id):
                         break
                 else:
-                    dec.body.insert(len(dec.body) - 1, make_if_statement(target_id))
+                    dec.body.insert(
+                        len(dec.body) - 1, make_if_statement(ass, target_id)
+                    )
             else:
                 for line in dec.body:
                     if isinstance(line, ast.Assign) and is_target_ann(line, target_id):
                         break
                 else:
-                    dec.body.insert(len(dec.body) - 1, make_target_ann(target_id))
+                    dec.body.insert(len(dec.body) - 1, make_target_ann(ass, target_id))
             return
     else:
         fun: ast.FunctionDef = ast.parse(
@@ -29,6 +31,8 @@ def resolve_dump(ass: ast.AnnAssign, target_id: str, body: list[ast.stmt]) -> No
         ).body[0]  # type: ignore
         fun.body.insert(
             len(fun.body) - 1,
-            make_if_statement(target_id) if is_optional else make_target_ann(target_id),
+            make_if_statement(ass, target_id)
+            if is_optional
+            else make_target_ann(ass, target_id),
         )
         body.append(fun)

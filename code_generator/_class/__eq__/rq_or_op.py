@@ -59,6 +59,8 @@ test:<ast.Compare object at 0x0000026B9708EEC0>
 
 import ast
 
+from code_generator._class.utils import multi_dict_detector, simple_dict_detector
+
 
 def is_if_target(fi: ast.If, target_id: str) -> bool:
     if isinstance(fi.test, ast.Compare):
@@ -77,7 +79,11 @@ def is_if_target(fi: ast.If, target_id: str) -> bool:
     return False
 
 
-def make_test_if(target_id: str):
+def make_test_if(ass: ast.AnnAssign, target_id: str):
+    if simple_dict_detector(ass) or multi_dict_detector(ass):
+        return ast.parse(
+            f"if set(self.{target_id}.keys()) == set(value.{target_id}.keys()):\n\tfor key in self.{target_id}:\n\t\tif value.{target_id}[key] != self.{target_id}[key]:\n\t\t\treturn False\nelse:\n\treturn False"
+        ).body[0]
     return ast.parse(f"if self.{target_id} != value.{target_id}:\n\treturn False").body[
         0
     ]

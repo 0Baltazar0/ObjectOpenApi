@@ -47,4 +47,4 @@ def resolve_property_set_get(
             has_setter = ast.parse(
                 f"@{target_id}.setter\ndef {target_id}(self,value:{ast.unparse(ass.annotation)})->None:\n\tself._{target_id} = value"
             ).body[0]
-            body.insert(body.index(ass) + 1, has_setter)
+            body.insert(body.index(has_getter) + 1, has_setter)
